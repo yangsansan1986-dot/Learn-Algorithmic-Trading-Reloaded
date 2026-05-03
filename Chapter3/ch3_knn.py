@@ -91,7 +91,7 @@ def sharpe_ratio(symbol_returns, strategy_returns):
     sharpe=(strategy_returns-symbol_returns)/strategy_std
     return sharpe.mean()
 
-print(sharpe_ratio(cum_strategy_return,cum_goog_return))
+print(sharpe_ratio(cum_goog_return,cum_strategy_return))
 
 
 

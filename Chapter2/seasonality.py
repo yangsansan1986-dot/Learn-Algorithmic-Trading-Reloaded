@@ -23,13 +23,16 @@ goog_montly_return_list=[]
 for i in range(len(goog_monthly_return)):
     goog_montly_return_list.append\
         ({'month':goog_monthly_return.index[i][1],
-          'monthly_return': goog_monthly_return[i]})
+          'monthly_return': goog_monthly_return.iloc[i]})
 
 goog_montly_return_list=pd.DataFrame(goog_montly_return_list,
                                      columns=('month','monthly_return'))
 
 goog_montly_return_list.boxplot(column='monthly_return', by='month')
 ax = plt.gca()
+plt.show()
+
+fig = plt.figure()
 labels = [item.get_text() for item in ax.get_xticklabels()]
 labels=['Jan','Feb','Mar','Apr','May','Jun',\
         'Jul','Aug','Sep','Oct','Nov','Dec']
@@ -38,10 +41,8 @@ ax.set_ylabel('GOOG return')
 plt.tick_params(axis='both', which='major', labelsize=7)
 plt.title("GOOG Montly return 2001-2018")
 plt.suptitle("")
-plt.show()
 
 
-fig = plt.figure()
 goog_data['Adj Close'].pct_change().groupby(
     [goog_data['Adj Close'].index.month])
 ax1 = fig.add_subplot(111, ylabel='Monthly return')
@@ -51,6 +52,7 @@ plt.show()
 
 # Displaying rolling statistics
 def plot_rolling_statistics_ts(ts, titletext,ytext, window_size=12):
+    plt.figure()
     ts.plot(color='red', label='Original', lw=0.5)
     ts.rolling(window_size).mean().plot(
             color='blue',label='Rolling Mean')
@@ -59,10 +61,10 @@ def plot_rolling_statistics_ts(ts, titletext,ytext, window_size=12):
     plt.legend(loc='best')
     plt.ylabel(ytext)
     plt.title(titletext)
-    plt.show(block=False)
+    plt.show()
 
 
-plot_rolling_statistics_ts(goog_monthly_return[1:],'GOOG prices rolling mean and standard deviation','Monthly return')
+plot_rolling_statistics_ts(goog_monthly_return.iloc[1:],'GOOG prices rolling mean and standard deviation','Monthly return')
 plot_rolling_statistics_ts(goog_data['Adj Close'],'GOOG prices rolling mean and standard deviation','Daily prices',365)
 
 plot_rolling_statistics_ts(goog_data['Adj Close']-goog_data['Adj Close'].rolling(365).mean(),'GOOG prices without trend','Daily prices',365)
@@ -72,11 +74,11 @@ from statsmodels.tsa.stattools import adfuller
 
 def test_stationarity(timeseries):
     print('Results of Dickey-Fuller Test:')
-    dftest = adfuller(timeseries[1:], autolag='AIC')
+    dftest = adfuller(timeseries.iloc[1:], autolag='AIC')
     dfoutput = pd.Series(dftest[0:4], index=['Test Statistic', 'p-value', '#Lags Used', 'Number of Observations Used'])
     print (dfoutput)
 
-test_stationarity(goog_monthly_return[1:])
+test_stationarity(goog_monthly_return.iloc[1:])
 test_stationarity(goog_data['Adj Close'])
 
 
@@ -86,15 +88,15 @@ from matplotlib import pyplot
 
 pyplot.figure()
 pyplot.subplot(211)
-plot_acf(goog_monthly_return[1:], ax=pyplot.gca(),lags=10)
+plot_acf(goog_monthly_return.iloc[1:], ax=pyplot.gca(),lags=10)
 pyplot.subplot(212)
-plot_pacf(goog_monthly_return[1:], ax=pyplot.gca(),lags=10)
+plot_pacf(goog_monthly_return.iloc[1:], ax=pyplot.gca(),lags=10)
 pyplot.show()
 
-from statsmodels.tsa.arima_model import ARIMA
-
-model = ARIMA(goog_monthly_return[1:], order=(2, 0, 2))
+from statsmodels.tsa.arima.model import ARIMA
+plt.figure()
+model = ARIMA(goog_monthly_return.iloc[1:], order=(2, 0, 2))
 fitted_results = model.fit()
-goog_monthly_return[1:].plot()
+goog_monthly_return.iloc[1:].plot()
 fitted_results.fittedvalues.plot(color='red')
 plt.show()

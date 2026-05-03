@@ -47,7 +47,7 @@ X_train,X_test,Y_train,Y_test=create_train_split_group(X,Y,split_ratio=0.8)
 from sklearn import linear_model
 
 # Fit the model
-ridge = linear_model.Ridge(alpha=10000)
+ridge = linear_model.Ridge(alpha=100)
 ridge.fit(X_train, Y_train)
 
 # The coefficients
@@ -61,7 +61,7 @@ print(goog_data.head())
 def calculate_return(df, split_value, symbol):
     cum_goog_return = df[split_value:]['%s_Returns' % symbol].cumsum() * 100
     df['Strategy_Returns'] = df['%s_Returns' %
-                                symbol] * df['Predicted_Signal'].shift(1)
+                                symbol] * (df['Predicted_Signal'].shift(1) >0)
     return cum_goog_return
 
 

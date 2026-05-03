@@ -47,7 +47,7 @@ X_train,X_test,Y_train,Y_test=create_train_split_group(X,Y,split_ratio=0.8)
 from sklearn import linear_model
 
 # Fit the model
-lasso = linear_model.Lasso(alpha=0.1)
+lasso = linear_model.Lasso(alpha=0.0001)
 lasso.fit(X_train, Y_train)
 
 # The coefficients
@@ -61,7 +61,7 @@ print(goog_data.head())
 def calculate_return(df, split_value, symbol):
     cum_goog_return = df[split_value:]['%s_Returns' % symbol].cumsum() * 100
     df['Strategy_Returns'] = df['%s_Returns' %
-                                symbol] * df['Predicted_Signal'].shift(1)
+                                symbol] * (df['Predicted_Signal'].shift(1) >0)
     return cum_goog_return
 
 
@@ -92,7 +92,7 @@ def sharpe_ratio(symbol_returns, strategy_returns):
     return sharpe.mean()
 
 
-print(sharpe_ratio(cum_strategy_return, cum_goog_return))
+print(sharpe_ratio(cum_goog_return, cum_strategy_return))
 
 from sklearn.metrics import mean_squared_error, r2_score
 

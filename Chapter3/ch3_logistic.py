@@ -73,7 +73,7 @@ def sharpe_ratio(symbol_returns, strategy_returns):
 accuracy_train = accuracy_score(Y_train, logistic.predict(X_train))
 accuracy_test = accuracy_score(Y_test, logistic.predict(X_test))
 print(accuracy_train, accuracy_test)
-print(sharpe_ratio(cum_strategy_return,cum_goog_return))
+print(sharpe_ratio(cum_goog_return,cum_strategy_return))
 
 
 

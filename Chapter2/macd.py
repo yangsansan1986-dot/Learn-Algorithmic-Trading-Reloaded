@@ -94,5 +94,7 @@ ax2 = fig.add_subplot(312, ylabel='MACD')
 macd.plot(ax=ax2, color='black', lw=2., legend=True)
 ema_macd.plot(ax=ax2, color='g', lw=2., legend=True)
 ax3 = fig.add_subplot(313, ylabel='MACD')
+
 macd_histogram.plot(ax=ax3, color='r', kind='bar', legend=True, use_index=False)
+ax3.tick_params(axis='x', labelbottom=False, bottom=False) 
 plt.show()

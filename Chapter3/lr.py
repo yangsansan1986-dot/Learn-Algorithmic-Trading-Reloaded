@@ -61,7 +61,7 @@ print(goog_data.head())
 def calculate_return(df, split_value, symbol):
     cum_goog_return = df[split_value:]['%s_Returns' % symbol].cumsum() * 100
     df['Strategy_Returns'] = df['%s_Returns' %
-                                symbol] * df['Predicted_Signal'].shift(1)
+                                symbol] * (df['Predicted_Signal'].shift(1) >0)
     return cum_goog_return
 
 
