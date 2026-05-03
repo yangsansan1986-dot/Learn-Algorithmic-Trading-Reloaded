@@ -13,12 +13,12 @@ for symbol in SYMBOLS:
   SRC_DATA_FILENAME = symbol + '_data.pkl'
 
   try:
-    data = pd.read_pickle(SRC_DATA_FILENAME)
+    data_= pd.read_pickle(SRC_DATA_FILENAME)
   except FileNotFoundError:
-    data = data.DataReader(symbol, 'yahoo', START_DATE, END_DATE)
-    data.to_pickle(SRC_DATA_FILENAME)
+    data_ = data.DataReader(symbol, 'yahoo', START_DATE, END_DATE)
+    data_.to_pickle(SRC_DATA_FILENAME)
 
-  symbols_data[symbol] = data
+  symbols_data[symbol] = data_
 
 # Visualize prices for currency to inspect relationship between them
 import matplotlib.pyplot as plt
@@ -118,7 +118,8 @@ for i in range(0, num_days):
     corr = np.corrcoef(price_deviation_from_sma[TRADING_INSTRUMENT], price_deviation_from_sma[symbol])
     cov = np.cov(price_deviation_from_sma[TRADING_INSTRUMENT], price_deviation_from_sma[symbol])
     corr_trading_instrument_lead_instrument = corr[0, 1]  # get the correlation between the 2 series
-    cov_trading_instrument_lead_instrument = cov[0, 0] / cov[0, 1] # get the covariance between the 2 series
+    # cov_trading_instrument_lead_instrument = cov[0, 0] / cov[0, 1] # get the covariance between the 2 series
+    cov_trading_instrument_lead_instrument = cov[0, 1] / cov[1, 1]
 
     correlation_history[correlation_label].append(corr_trading_instrument_lead_instrument)
 

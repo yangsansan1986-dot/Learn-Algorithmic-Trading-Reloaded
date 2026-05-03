@@ -10,7 +10,7 @@ SRC_DATA_FILENAME=SYMBOL + '_data.pkl'
 try:
   data = pd.read_pickle(SRC_DATA_FILENAME)
 except FileNotFoundError:
-  data = data.DataReader(SYMBOL, 'yahoo', start_date, end_date)
+  data = data.DataReader(SYMBOL, 'sina', start_date, end_date)
   data.to_pickle(SRC_DATA_FILENAME)
 
 # Variables/constants for EMA Calculation:

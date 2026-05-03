@@ -12,7 +12,7 @@ from pandas_datareader import data
 
 symbolsIds = ['SPY','AAPL','ADBE','LUV','MSFT',\
               'SKYW','QCOM',
-                 'HPQ','JNPR','AMD','IBM']
+                 'HPQ','AMD','IBM']
 
 def load_financial_data(symbols, start_date, end_date,output_file):
     try:
@@ -43,9 +43,9 @@ def find_cointegrated_pairs(data):
             if result[1] < 0.02:
                 pairs.append((keys[i], keys[j]))
     return pvalue_matrix, pairs
+adj_close = data.xs('Adj Close', axis=1, level=1)
 
-
-pvalues, pairs = find_cointegrated_pairs(data['Adj Close'])
+pvalues, pairs = find_cointegrated_pairs(adj_close.dropna())
 print(pairs)
 
 seaborn.heatmap(pvalues, xticklabels=symbolsIds,

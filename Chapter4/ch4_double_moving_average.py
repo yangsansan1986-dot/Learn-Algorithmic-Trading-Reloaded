@@ -29,9 +29,10 @@ def double_moving_average(financial_data, short_window, long_window):
     signals['long_mavg'] = financial_data['Close'].\
         rolling(window=long_window,
                 min_periods=1, center=False).mean()
-    signals['signal'][short_window:] =\
-        np.where(signals['short_mavg'][short_window:]
-                                                > signals['long_mavg'][short_window:], 1.0, 0.0)
+    valid_mask = signals.index >= signals.index[short_window]  
+    signals.loc[valid_mask,'signal'] =\
+        np.where(signals['short_mavg'][valid_mask]
+                                                > signals['long_mavg'][valid_mask], 1.0, 0.0)
     signals['orders'] = signals['signal'].diff()
     return signals
 

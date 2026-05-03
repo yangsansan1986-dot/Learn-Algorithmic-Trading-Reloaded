@@ -46,21 +46,21 @@ def turtle_trading(financial_data, window_size):
 
     init=True
     position=0
-    for k in range(len(signals)):
+    for k in signals.index:
         if signals['long_entry'][k] and position==0:
-            signals.orders.values[k] = 1
+            signals.loc[k,'orders'] = 1
             position=1
         elif signals['short_entry'][k] and position==0:
-            signals.orders.values[k] = -1
+            signals.loc[k,'orders'] = -1
             position=-1
         elif signals['short_exit'][k] and position>0:
-            signals.orders.values[k] = -1
+            signals.loc[k,'orders'] = -1
             position = 0
         elif signals['long_exit'][k] and position < 0:
-            signals.orders.values[k] = 1
+            signals.loc[k,'orders'] = 1
             position = 0
         else:
-            signals.orders.values[k] = 0
+            signals.loc[k,'orders'] = 0
 
     return signals
 

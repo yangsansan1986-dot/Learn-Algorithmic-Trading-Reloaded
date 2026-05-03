@@ -26,7 +26,8 @@ def naive_momentum_trading(financial_data, nb_conseq_days):
     cons_day=0
     prior_price=0
     init=True
-    for k in range(len(financial_data['Adj Close'])):
+    for idx in range(len(financial_data['Adj Close'])):
+        k = financial_data.index[idx]
         price=financial_data['Adj Close'][k]
         if init:
             prior_price=price
@@ -40,9 +41,9 @@ def naive_momentum_trading(financial_data, nb_conseq_days):
                 cons_day=0
             cons_day-=1
         if cons_day==nb_conseq_days:
-            signals['orders'][k]=1
+            signals.loc[k,'orders']=1
         elif cons_day == -nb_conseq_days:
-            signals['orders'][k]=-1
+            signals.loc[k,'orders']=-1
 
 
     return signals

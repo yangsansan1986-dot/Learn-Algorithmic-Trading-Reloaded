@@ -19,7 +19,7 @@ import seaborn
 from pandas_datareader import data
 
 symbolsIds = ['SPY','AAPL','ADBE','LUV','MSFT','SKYW','QCOM',
-                 'HPQ','JNPR','AMD','IBM']
+                 'HPQ','AMD', 'JNPR', 'IBM']
 
 def load_financial_data(symbols, start_date, end_date,output_file):
     try:
@@ -27,7 +27,7 @@ def load_financial_data(symbols, start_date, end_date,output_file):
         print('File data found...reading symbols data')
     except FileNotFoundError:
         print('File not found...downloading the symbols data')
-        df = data.DataReader(symbols, 'yahoo', start_date, end_date)
+        df = data.DataReader(symbols, 'sina', start_date, end_date)
         df.to_pickle(output_file)
     return df
 
@@ -36,10 +36,12 @@ data=load_financial_data(symbolsIds,start_date='2001-01-01',
                     output_file='multi_data_large.pkl')
 
 
-Symbol1_prices = data['Adj Close']['MSFT']
+data = data.dropna()
+Symbol1_prices = data.xs('MSFT',axis=1,level=0)['Adj Close']
 Symbol1_prices.plot(figsize=(15,7))
+Symbol1_prices.name = 'MSFT'
 plt.show()
-Symbol2_prices = data['Adj Close']['JNPR']
+Symbol2_prices = data.xs('JNPR',axis=1,level=0)['Adj Close']
 Symbol2_prices.name = 'JNPR'
 plt.title("MSFT and JNPR prices")
 Symbol1_prices.plot()
@@ -110,24 +112,25 @@ pair_correlation_trading_strategy['symbol2_sell']=np.zeros(len(Symbol1_prices))
 
 
 position=0
-for i in range(len(Symbol1_prices)):
+for idx in range(len(Symbol1_prices)):
+    i = Symbol1_prices.index[idx]
     s1price=Symbol1_prices[i]
     s2price=Symbol2_prices[i]
     if not position and symbol1_buy[i]!=0:
-        pair_correlation_trading_strategy['symbol1_buy'][i]=s1price
-        pair_correlation_trading_strategy['symbol2_sell'][i] = s2price
+        pair_correlation_trading_strategy.loc[i,'symbol1_buy']=s1price
+        pair_correlation_trading_strategy.loc[i,'symbol2_sell']=s2price
         position=1
     elif not position and symbol1_sell[i]!=0:
-        pair_correlation_trading_strategy['symbol1_sell'][i] = s1price
-        pair_correlation_trading_strategy['symbol2_buy'][i] = s2price
+        pair_correlation_trading_strategy.loc[i,'symbol1_sell']=s1price  
+        pair_correlation_trading_strategy.loc[i,'symbol2_buy']=s2price
         position = -1
-    elif position==-1 and (symbol1_sell[i]==0 or i==len(Symbol1_prices)-1):
-        pair_correlation_trading_strategy['symbol1_buy'][i] = s1price
-        pair_correlation_trading_strategy['symbol2_sell'][i] = s2price
+    elif position==-1 and (symbol1_sell[i]==0 or i==len(Symbol1_prices)-1): # buy when sell signal is 0 or last day
+        pair_correlation_trading_strategy.loc[i,'symbol1_buy']=s1price
+        pair_correlation_trading_strategy.loc[i,'symbol2_sell']=s2price
         position = 0
     elif position==1 and (symbol1_buy[i] == 0 or i==len(Symbol1_prices)-1):
-        pair_correlation_trading_strategy['symbol1_sell'][i] = s1price
-        pair_correlation_trading_strategy['symbol2_buy'][i] = s2price
+        pair_correlation_trading_strategy.loc[i,'symbol1_sell']=s1price
+        pair_correlation_trading_strategy.loc[i,'symbol2_buy']=s2price
         position = 0
 
 
@@ -140,7 +143,7 @@ symbol2_buy.plot(color="g", linestyle="None", marker="^")
 symbol2_sell.plot(color="r", linestyle="None", marker="v")
 
 x1,x2,y1,y2 = plt.axis()
-plt.axis((x1,x2,Symbol1_prices.min(),Symbol2_prices.max()))
+plt.axis((x1,x2,Symbol1_prices.max(),Symbol2_prices.min()))
 plt.legend(["Symbol1", "Buy Signal", "Sell Signal","Symbol2"])
 plt.show()
 
@@ -154,7 +157,7 @@ Symbol2_prices.plot()
 pair_correlation_trading_strategy['symbol2_buy'].plot(color="g", linestyle="None", marker="^")
 pair_correlation_trading_strategy['symbol2_sell'].plot(color="r", linestyle="None", marker="v")
 x1,x2,y1,y2 = plt.axis()
-plt.axis((x1,x2,Symbol1_prices.min(),Symbol2_prices.max()))
+plt.axis((x1,x2,Symbol1_prices.max(),Symbol2_prices.min()))
 plt.legend(["Symbol1", "Buy Signal", "Sell Signal","Symbol2"])
 plt.show()
 
@@ -189,28 +192,29 @@ pair_correlation_trading_strategy['delta']=np.zeros(len(Symbol1_prices))
 
 position=0
 s1_shares = 1000000
-for i in range(len(Symbol1_prices)):
+for idx in range(len(Symbol1_prices)):
+    i = Symbol1_prices.index[idx]
     s1positions= Symbol1_prices[i] * s1_shares
     s2positions= Symbol2_prices[i] * int(s1positions/Symbol2_prices[i])
     print(Symbol1_prices[i],Symbol2_prices[i])
     delta_position=s1positions-s2positions
     if not position and symbol1_buy[i]!=0:
-        pair_correlation_trading_strategy['symbol1_buy'][i]=s1positions
-        pair_correlation_trading_strategy['symbol2_sell'][i] = s2positions
-        pair_correlation_trading_strategy['delta'][i]=delta_position
+        pair_correlation_trading_strategy.loc[i,'symbol1_buy']=s1positions
+        pair_correlation_trading_strategy.loc[i,'symbol2_sell']=s2positions
+        pair_correlation_trading_strategy.loc[i,'delta']=delta_position
         position=1
     elif not position and symbol1_sell[i]!=0:
-        pair_correlation_trading_strategy['symbol1_sell'][i] = s1positions
-        pair_correlation_trading_strategy['symbol2_buy'][i] = s2positions
-        pair_correlation_trading_strategy['delta'][i] = delta_position
+        pair_correlation_trading_strategy.loc[i,'symbol1_sell']=s1positions
+        pair_correlation_trading_strategy.loc[i,'symbol2_buy']=s2positions
+        pair_correlation_trading_strategy.loc[i,'delta']=delta_position
         position = -1
     elif position==-1 and (symbol1_sell[i]==0 or i==len(Symbol1_prices)-1):
-        pair_correlation_trading_strategy['symbol1_buy'][i] = s1positions
-        pair_correlation_trading_strategy['symbol2_sell'][i] = s2positions
+        pair_correlation_trading_strategy.loc[i,'symbol1_buy']=s1positions
+        pair_correlation_trading_strategy.loc[i,'symbol2_sell']=s2positions
         position = 0
     elif position==1 and (symbol1_buy[i] == 0 or i==len(Symbol1_prices)-1):
-        pair_correlation_trading_strategy['symbol1_sell'][i] = s1positions
-        pair_correlation_trading_strategy['symbol2_buy'][i] = s2positions
+        pair_correlation_trading_strategy.loc[i,'symbol1_sell']=s1positions
+        pair_correlation_trading_strategy.loc[i,'symbol2_buy']=s2positions
         position = 0
 
 
@@ -233,4 +237,4 @@ plt.show()
 
 pair_correlation_trading_strategy['delta'].plot()
 plt.title("Delta Position")
-plt.show()
+plt.show() 
