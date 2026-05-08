@@ -1,76 +1,112 @@
+# Learn Algorithmic Trading - Reloaded
 
+本项目是对《Learn Algorithmic Trading》一书附带代码的修改和优化版本。
 
+## 项目简介
 
-# Learn Algorithmic Trading 
+本代码库包含了算法交易领域的多个核心概念实现，涵盖从技术指标计算到策略回测的完整流程。原书代码存在一些兼容性问题和逻辑错误，本版本对其进行了修复和改进。
 
-<a href="https://www.packtpub.com/in/data/learn-algorithmic-trading-fundamentals-of-algorithmic-trading?utm_source=github&utm_medium=repository&utm_campaign=9781789348347"><img src="https://www.packtpub.com/media/catalog/product/cache/e4d64343b1bc593f1c5348fe05efa4a6/9/7/9781789348347-original.jpeg" alt="Learn Algorithmic Trading " height="256px" align="right"></a>
+## 主要修改内容
 
-This is the code repository for [Learn Algorithmic Trading ](https://www.packtpub.com/in/data/learn-algorithmic-trading-fundamentals-of-algorithmic-trading?utm_source=github&utm_medium=repository&utm_campaign=9781789348347), published by Packt.
+### 1. Chapter 5 - 统计套利策略
+- 修复了 `stat_arb.py` 中协方差计算的数学逻辑错误
+- 修正了 PnL（盈亏）计算中的逻辑问题
+- 优化了未平仓量的计算方式
 
-**Build and deploy algorithmic trading systems and strategies using Python and advanced data analysis**
+### 2. Chapter 7 - 交易模拟框架
+- 修复了单元测试文件中的导入问题（`ModuleNotFoundError: No module named 'chapter7'`）
+- 将绝对导入改为相对导入，确保模块正确加载
 
-## What is this book about?
-It’s now harder than ever to get a significant edge over competitors in terms of speed and efficiency when it comes to algorithmic trading. Relying on sophisticated trading signals, predictive models and strategies can make all the difference. This book will guide you through these aspects, giving you insights into how modern electronic trading markets and participants operate.
+### 3. Chapter 8 - FIX 协议模拟器
+- 修复了 `quickfix.Exception` 的兼容性问题，改为 `quickfix.FIXException`
+- 修复了模块导入路径问题（`from sim import ...` → `from fixsim.sim import ...`）
+- 修复了 `yaml.load()` 的安全性警告，添加 `Loader=yaml.SafeLoader` 参数
 
+### 4. Chapter 9 - 数据存储与策略实现
+- **hd5pandareader.py**: 修复了 pandas `to_hdf()` API 兼容性问题（添加 `key=` 参数）
+- **hd5pandareader.py**: 创建模拟金融数据替代 Yahoo Finance 数据源（原数据源已失效）
+- **kdb_data.py**: 用 pandas DataFrame 替代 pyq/KDB+ 数据库依赖（避免安装复杂的 KDB+ 环境）
+- **TradingStrategyDualMA.py**: 发现并标记了重复调用 `handle_book_event` 的代码问题
 
-This book covers the following exciting features:
-Understand the components of modern algorithmic trading systems and strategies 
-Apply machine learning in algorithmic trading signals and strategies using Python 
-Build, visualize and analyze trading strategies based on mean reversion, trend, economic releases and more 
-Quantify and build a risk management system for Python trading strategies 
-Build a backtester to run simulated trading strategies for improving the performance of your trading bot 
-Deploy and incorporate trading strategies in the live market to maintain and improve profitability
+## Python 版本和依赖
 
-If you feel this book is for you, get your [copy](https://www.amazon.com/dp/178934834X) today!
+### Python 版本
+- Python 3.12
 
-<a href="https://www.packtpub.com/?utm_source=github&utm_medium=banner&utm_campaign=GitHubBanner"><img src="https://raw.githubusercontent.com/PacktPublishing/GitHub/master/GitHub.png" 
-alt="https://www.packtpub.com/" border="5" /></a>
+### 核心依赖库
 
-## Instructions and Navigations
-All of the code is organized into folders. For example, Chapter02.
+| 库名 | 版本 | 用途 |
+|------|------|------|
+| pandas | 3.0.2 | 数据分析和处理 |
+| numpy | 2.4.4 | 数值计算 |
+| matplotlib | 3.10.8 | 数据可视化 |
+| scikit-learn | 1.5.0 | 机器学习算法 |
+| quickfix | 1.15.1 | FIX 协议实现 |
+| h5py | 3.16.0 | HDF5 数据存储 |
+| tables | 3.11.1 | 高性能 HDF5 数据处理 |
+| twisted | 24.3.0 | 异步网络编程 |
+| pyyaml | 6.0.3 | YAML 配置文件处理 |
+| pandas-datareader | 0.10.0 | 金融数据获取 |
 
-The code will look like the following:
+### 安装依赖
+
+```bash
+# 使用 pip 安装所有依赖
+pip install -r requirements.txt
+
+# 或使用虚拟环境
+e:\Code\python\Learn\py312\Scripts\pip.exe install -r requirements.txt
 ```
-import pandas as pd
-from pandas_datareader import data
+
+## 项目结构
+
+```
+Learn-Algorithmic-Trading-Reloaded/
+├── Chapter1/              # 基础概念
+├── Chapter2/              # 技术指标计算（SMA, EMA, MACD, RSI等）
+├── Chapter3/              # 机器学习模型（KNN, Logistic, SVM等）
+├── Chapter4/              # 交易策略（双均线、海龟交易等）
+├── Chapter5/              # 统计套利策略
+├── Chapter6/              # 风险管理
+├── Chapter7/              # 交易模拟框架
+├── Chapter8/              # FIX 协议模拟器
+└── Chapter9/              # 数据存储与事件驱动回测
 ```
 
-**Following is what you need for this book:**
-This book is for software engineers, financial traders, data analysts, and entrepreneurs. Anyone who wants to get started with algorithmic trading and understand how it works; and learn the components of a trading system, protocols and algorithms required for black box and gray box trading, and techniques for building a completely automated and profitable trading business will also find this book useful.
+## 使用说明
 
-With the following software and hardware list you can run all code files present in the book (Chapter 1-10).
-### Software and Hardware List
-| Chapter | Software required | OS required |
-| -------- | ------------------------------------ | ----------------------------------- |
-| All | Python 2.7+ | Windows, Mac OS X, and Linux (Any) |
+### 运行 FIX 模拟器
 
+```bash
+# 启动 FIX Server
+cd Chapter8/fixsim
+python fixsim-server.py -ac fixsim-server.conf.ini -c fixsim-server.conf.yaml
 
-We also provide a PDF file that has color images of the screenshots/diagrams used in this book. [Click here to download it](https://static.packt-cdn.com/downloads/9781789348347_ColorImages.pdf).
+# 启动 FIX Client（新开终端）
+cd Chapter8/fixsim
+python fixsim-client.py -ic fixsim-client.conf.ini -c fixsim-client.conf.yaml
+```
 
-## Errata
+### 运行 HDF5 示例
 
-* Page 144 (Bullet pont 4, line 9 of code): **MIN_PROFIT_TO_CLOSE = 10** _should be_ **MIN_PROFIT_TO_CLOSE = 10*NUM_SHARES_PER_TRADE**
+```bash
+cd Chapter9
+python hd5pandareader.py
+```
 
+### 运行 KDB+ 替代示例
 
-### Related products
-* Mastering Python for Finance - Second Edition  [[Packt]](https://www.packtpub.com/in/big-data-and-business-intelligence/mastering-python-finance-second-edition?utm_source=github&utm_medium=repository&utm_campaign=9781789346466) [[Amazon]](https://www.amazon.com/dp/1789346460)
+```bash
+cd Chapter9
+python kdb_data.py
+```
 
-* Hands-On Machine Learning for Algorithmic Trading  [[Packt]](https://www.packtpub.com/in/big-data-and-business-intelligence/hands-machine-learning-algorithmic-trading?utm_source=github&utm_medium=repository&utm_campaign=9781789346411) [[Amazon]](https://www.amazon.com/dp/178934641X)
+## 注意事项
 
+1. **Yahoo Finance 数据源**: 原书使用的 Yahoo Finance API 已失效，部分代码使用模拟数据替代
+2. **KDB+ 数据库**: `kdb_data.py` 已改用 pandas 实现，无需安装 KDB+
+3. **quickfix 安装**: quickfix 包需要 C++ 编译环境，建议使用预编译版本
 
-## Get to Know the Authors
-**Sebastien Donadio**
-Sebastien Donadio is the Chief Technology Officer at Tradair, responsible for leading the technology. He has a wide variety of professional experience, including being head of software engineering at HC Technologies, partner and technical director of a high-frequency FX firm, a quantitative trading strategy software developer at Sun Trading, working as project lead for the Department of Defense. He also has research experience with Bull SAS, and an IT Credit Risk Manager with Société Générale while in France. He has taught various computer science courses for the past ten years in the University of Chicago, NYU and Columbia University. His main passion is technology but he is also a scuba diving instructor and an experienced rock-climber.
+## 许可证
 
-**Sourav Ghosh**
-Sourav Ghosh has worked in several proprietary high-frequency algorithmic trading firms over the last decade. He has built and deployed extremely low latency, high throughput automated trading systems for trading exchanges around the world, across multiple asset classes. He specializes in statistical arbitrage market-making, and pairs trading strategies for the most liquid global futures contracts. He works as a Senior Quantitative Developer at a trading firm in Chicago. He holds a Masters in Computer Science from the University of Southern California. His areas of interest include Computer Architecture, FinTech, Probability Theory and Stochastic Processes, Statistical Learning and Inference Methods, and Natural Language Processing.
-
-
-### Suggestions and Feedback
-[Click here](https://docs.google.com/forms/d/e/1FAIpQLSdy7dATC6QmEL81FIUuymZ0Wy9vH1jHkvpY57OiMeKGqib_Ow/viewform) if you have any feedback or suggestions.
-
-
-### Download a free PDF
-
- <i>If you have already purchased a print or Kindle version of this book, you can get a DRM-free PDF version at no cost.<br>Simply click on the link to claim your free PDF.</i>
-<p align="center"> <a href="https://packt.link/free-ebook/9781789348347">https://packt.link/free-ebook/9781789348347 </a> </p>
+MIT License
