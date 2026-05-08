@@ -1,0 +1,6 @@
+FixServer: publishMarketData {'USD/RUB': <Subscription USD/RUB>, 'EUR/USD': <Subscription EUR/USD>}
+FixServer:No session subscribed, skip publish symbol USD/RUB
+FixServer:No session subscribed, skip publish symbol EUR/USD
+FixServer: publishMarketData {'USD/RUB': <Subscription USD/RUB>, 'EUR/USD': <Subscription EUR/USD>}
+FixServer:No session subscribed, skip publish symbol USD/RUB
+FixServer:No session subscribed, skip publish symbol EUR/USD

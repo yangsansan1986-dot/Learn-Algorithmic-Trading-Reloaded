@@ -130,8 +130,7 @@ class TradingStrategyDualMA:
             self.handle_book_event(book_event)
         else:
             if len(self.ob_2_ts)>0:
-                be=self.handle_book_event(self.ob_2_ts.popleft())
-                self.handle_book_event(be)
+                self.handle_book_event(self.ob_2_ts.popleft())
 
     def handle_book_event(self,book_event):
         if book_event is not None:

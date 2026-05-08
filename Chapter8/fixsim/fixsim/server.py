@@ -5,7 +5,7 @@ import random
 import datetime
 from twisted.internet import task
 
-from sim import (FixSimError, float_range,
+from fixsim.sim import (FixSimError, float_range,
                  FixSimApplication, create_fix_version,
                  instance_safe_call, create_logger, IncrementID, load_yaml)
 
@@ -300,7 +300,7 @@ class Server(FixSimApplication):
 
             subscription.addSession(sessionID)
         except Exception as e:
-            print e,e.args
+            print(e.args)
             self.sendMarketDataReject(requestID, str(e), sessionID)
 
     @instance_safe_call

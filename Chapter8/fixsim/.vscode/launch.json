@@ -1,0 +1,35 @@
+{
+    // Use IntelliSense to learn about possible attributes.
+    // Hover to view descriptions of existing attributes.
+    // For more information, visit: https://go.microsoft.com/fwlink/?linkid=830387
+    "version": "0.2.0",
+    "configurations": [
+        {
+            "name": "Python Debugger: Current File",
+            "type": "debugpy",
+            "request": "launch",
+            "program": "fixsim-client.py",
+            "console": "integratedTerminal",
+            "args": [
+                "--initiator_config",
+                "${workspaceFolder}/fixsim-client.conf.ini",
+                "--client_config",
+                "${workspaceFolder}/fixsim-client.conf.yaml"
+            ]
+        },
+        {
+            "name": "Python Debugger: Current File",
+            "type": "debugpy",
+            "request": "launch",
+            "program": "fixsim-server.py",
+            "console": "integratedTerminal",
+            "justMyCode": false,
+            "args": [
+                "--acceptor_config",
+                "${workspaceFolder}/fixsim-server.conf.ini",
+                "--server_config",
+                "${workspaceFolder}/fixsim-server.conf.yaml"
+            ]
+        }
+    ]
+}

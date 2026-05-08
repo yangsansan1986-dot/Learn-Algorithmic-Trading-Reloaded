@@ -7,7 +7,7 @@ import datetime
 
 from twisted.internet import task
 
-from sim import (FixSimError, FixSimApplication, create_fix_version,
+from fixsim.sim import (FixSimError, FixSimApplication, create_fix_version,
                  instance_safe_call, create_logger, IncrementID, load_yaml)
 
 

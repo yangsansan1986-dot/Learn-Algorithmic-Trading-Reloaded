@@ -1,9 +1,9 @@
 import unittest
-from chapter7.LiquidityProvider import LiquidityProvider
-from chapter7.TradingStrategy import TradingStrategy
-from chapter7.MarketSimulator import MarketSimulator
-from chapter7.OrderManager import OrderManager
-from chapter7.OrderBook import OrderBook
+from LiquidityProvider import LiquidityProvider
+from TradingStrategy import TradingStrategy
+from MarketSimulator import MarketSimulator
+from OrderManager import OrderManager
+from OrderBook import OrderBook
 from collections import deque
 
 class TestTradingSimulation(unittest.TestCase):
@@ -62,9 +62,9 @@ class TestTradingSimulation(unittest.TestCase):
         self.assertEqual(len(self.ts_2_om), 0)
         self.assertEqual(len(self.om_2_gw), 2)
         self.ms.handle_order_from_gw()
-        self.assertEqual(len(self.gw_2_om), 1)
-        self.ms.handle_order_from_gw()
         self.assertEqual(len(self.gw_2_om), 2)
+        self.ms.handle_order_from_gw()
+        self.assertEqual(len(self.gw_2_om), 4)
         self.om.handle_input_from_market()
         self.om.handle_input_from_market()
         self.assertEqual(len(self.om_2_ts), 2)

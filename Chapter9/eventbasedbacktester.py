@@ -1,8 +1,8 @@
-from chapter7.LiquidityProvider import LiquidityProvider
-from chapter9.TradingStrategyDualMA import TradingStrategyDualMA
-from chapter7.MarketSimulator import MarketSimulator
-from chapter7.OrderManager import OrderManager
-from chapter7.OrderBook import OrderBook
+from Chapter7.LiquidityProvider import LiquidityProvider
+from Chapter9.TradingStrategyDualMA import TradingStrategyDualMA
+from Chapter7.MarketSimulator import MarketSimulator
+from Chapter7.OrderManager import OrderManager
+from Chapter7.OrderBook import OrderBook
 from collections import deque
 
 import pandas as pd
@@ -30,7 +30,7 @@ class EventBasedBackTester:
         self.ob = OrderBook(self.lp_2_gateway, self.ob_2_ts)
         self.ts = TradingStrategyDualMA(self.ob_2_ts, self.ts_2_om,\
                                   self.om_2_ts)
-        self.ms = MarketSimulator(self.om_2_gw, self.gw_2_om)
+        self.ms = MarketSimulator(self.om_2_gw, self.gw_2_om, fill_ratio = 10)
         self.om = OrderManager(self.ts_2_om, self.om_2_ts,\
                                self.om_2_gw, self.gw_2_om)
 

@@ -1,5 +1,5 @@
 import unittest
-from chapter7.LiquidityProvider import LiquidityProvider
+from LiquidityProvider import LiquidityProvider
 
 
 class TestMarketSimulator(unittest.TestCase):

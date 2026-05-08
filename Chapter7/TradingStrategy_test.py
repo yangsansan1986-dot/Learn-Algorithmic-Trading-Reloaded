@@ -1,11 +1,11 @@
 import unittest
-from chapter7.TradingStrategy import TradingStrategy
+from TradingStrategy import TradingStrategy
 
 
 class TestMarketSimulator(unittest.TestCase):
 
     def setUp(self):
-        self.trading_strategy= TradingStrategy()
+        self.trading_strategy= TradingStrategy(ob_2_ts=None, ts_2_om=None, om_2_ts=None)
 
 
     def test_receive_top_of_book(self):

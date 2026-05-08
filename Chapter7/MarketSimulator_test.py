@@ -1,5 +1,5 @@
 import unittest
-from chapter7.MarketSimulator import MarketSimulator
+from MarketSimulator import MarketSimulator
 
 
 class TestMarketSimulator(unittest.TestCase):

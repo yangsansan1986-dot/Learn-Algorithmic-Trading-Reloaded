@@ -7,7 +7,7 @@ import yaml
 from twisted.internet import task
 
 
-class MarketDataError(quickfix.Exception):
+class MarketDataError(quickfix.FIXException):
     pass
 
 
@@ -19,7 +19,7 @@ def instance_safe_call(fn):
     def wrapper(self, *args, **kwargs):
         try:
             return fn(self, *args, **kwargs)
-        except quickfix.Exception as e:
+        except quickfix.FIXException as e:
             raise e
         except Exception as e:
             self.logger.exception(str(e))
@@ -43,7 +43,7 @@ class FixSimApplication(quickfix.Application):
 
     @instance_safe_call
     def fromApp(self, message, sessionID):
-        print "FROM APP"
+        print("FROM APP")
         fixMsgType = quickfix.MsgType()
         beginString = quickfix.BeginString()
         message.getHeader().getField(beginString)
@@ -113,7 +113,7 @@ def create_logger(config):
 
 def load_yaml(path):
     with open(path, 'r') as stream:
-        cfg = yaml.load(stream)
+        cfg = yaml.load(stream, Loader=yaml.SafeLoader)
 
     return cfg
 

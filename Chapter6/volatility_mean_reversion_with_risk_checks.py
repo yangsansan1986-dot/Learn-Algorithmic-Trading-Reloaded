@@ -118,7 +118,7 @@ for close_price in close:
     sell_sum_price_qty += (close_price * NUM_SHARES_PER_TRADE)  # update vwap sell-price
     sell_sum_qty += NUM_SHARES_PER_TRADE
     traded_volume += NUM_SHARES_PER_TRADE
-    print("Sell ", NUM_SHARES_PER_TRADE, " @ ", close_price, "Position: ", position)
+    # print("Sell ", NUM_SHARES_PER_TRADE, " @ ", close_price, "Position: ", position)
 
   # We will perform a buy trade at close_price if the following conditions are met:
   # 1. The APO trading signal value is below Buy-Entry threshold and the difference between last trade-price and current-price is different enough.
@@ -133,7 +133,7 @@ for close_price in close:
     buy_sum_price_qty += (close_price * NUM_SHARES_PER_TRADE)  # update the vwap buy-price
     buy_sum_qty += NUM_SHARES_PER_TRADE
     traded_volume += NUM_SHARES_PER_TRADE
-    print("Buy ", NUM_SHARES_PER_TRADE, " @ ", close_price, "Position: ", position)
+    # print("Buy ", NUM_SHARES_PER_TRADE, " @ ", close_price, "Position: ", position)
   else:
     # No trade since none of the conditions were met to buy or sell
     orders.append(0)
@@ -186,7 +186,7 @@ for close_price in close:
     last_buy_price = 0
     last_sell_price = 0
 
-  print("OpenPnL: ", open_pnl, " ClosedPnL: ", closed_pnl, " TotalPnL: ", (open_pnl + closed_pnl))
+  # print("OpenPnL: ", open_pnl, " ClosedPnL: ", closed_pnl, " TotalPnL: ", (open_pnl + closed_pnl))
   pnls.append(closed_pnl + open_pnl)
 
   if len(pnls) > 5:

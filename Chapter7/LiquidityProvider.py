@@ -32,7 +32,7 @@ class LiquidityProvider:
         quantity=randrange(1,10)*100
         side=sample(['buy','sell'],1)[0]
         order_id=randrange(0,self.order_id+1)
-        o=self.lookup_orders(order_id)
+        o, count=self.lookup_orders(order_id)
 
         new_order=False
         if o is None:
@@ -49,7 +49,7 @@ class LiquidityProvider:
             'action': action
         }
 
-        if not new_order:
+        if new_order:
             self.order_id+=1
             self.orders.append(ord)
 

@@ -22,8 +22,8 @@ class TradingStrategy:
         }
         self.orders.append(ord.copy())
 
-        price=book_event['offer_price']
-        side='buy'
+        # price=book_event['offer_price']
+        # side='buy'
         self.order_id+=1
         ord = {
             'id': self.order_id,

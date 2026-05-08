@@ -1,4 +1,4 @@
-from chapter9.simulatedclock import SimulatedRealClock
+from simulatedclock import SimulatedRealClock
 import threading
 from time import sleep
 from datetime import datetime, timedelta
@@ -10,6 +10,7 @@ class TimeOut(threading.Thread):
         self.sim_real_clock=sim_real_clock
         self.callback=fun
         self.disabled=False
+        
     def run(self):
         while not self.disabled and\
                 self.sim_real_clock.getTime() < self.time_to_stop:

@@ -20,7 +20,7 @@ goog_data=load_financial_data(start_date='2001-01-01',
                     output_file='goog_data.pkl')
 
 
-goog_data.to_hdf('goog_data.h5','goog_data',mode='w',format='table',data_columns=True)
+goog_data.to_hdf('goog_data.h5', key='goog_data', mode='w', format='table', data_columns=True)
 
 h = h5py.File('goog_data.h5')
 
