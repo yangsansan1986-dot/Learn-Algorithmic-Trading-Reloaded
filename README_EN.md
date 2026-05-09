@@ -6,6 +6,8 @@ This project is a modified and optimized version of the code accompanying the bo
 
 This codebase contains implementations of core concepts in algorithmic trading, covering the complete workflow from technical indicator calculation to strategy backtesting. The original book code had several compatibility issues and logical errors, which have been fixed and improved in this version.
 
+**Original Book Code Repository**: [https://github.com/PacktPublishing/Learn-Algorithmic-Trading](https://github.com/PacktPublishing/Learn-Algorithmic-Trading)
+
 ## Key Modifications
 
 ### 1. Chapter 5 - Statistical Arbitrage Strategy

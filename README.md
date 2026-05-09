@@ -6,6 +6,8 @@
 
 本代码库包含了算法交易领域的多个核心概念实现，涵盖从技术指标计算到策略回测的完整流程。原书代码存在一些兼容性问题和逻辑错误，本版本对其进行了修复和改进。
 
+**原书代码仓库**: [https://github.com/PacktPublishing/Learn-Algorithmic-Trading](https://github.com/PacktPublishing/Learn-Algorithmic-Trading)
+
 ## 主要修改内容
 
 ### 1. Chapter 5 - 统计套利策略
